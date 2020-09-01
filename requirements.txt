@@ -17,8 +17,8 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.0
-keyring==10.6.0
-keyrings.alt==3.0
+# keyring==10.6.0
+# keyrings.alt==3.0
 Markdown==3.1.1
 MarkupSafe==1.1.1
 numpy==1.17.3
@@ -27,15 +27,15 @@ opt-einsum==3.1.0
 Pillow==7.2.0
 protobuf==3.10.0
 pycrypto==2.6.1
-pygobject==3.26.1
+# pygobject==3.26.1
 PySocks==1.7.1
-python-apt==1.6.5
+# python-apt==1.6.5
 pyxdg==0.25
 requests==2.24.0
 scipy==1.5.2
 SecretStorage==2.3.1
 six==1.10.0
-tensorboard==1.15.0
+# tensorboard==1.15.0
 tensorflow-estimator==1.15.1
 tensorflow-gpu==1.15.0
 termcolor==1.1.0
