@@ -8,6 +8,6 @@ dnnlib.tflib.init_tf()
 
 def getnewImage():
     seed = random.randint(1,1000)
-    img = generate_images('pretrained/masks-early.pkl', [seed], None, 0.6)
+    img = generate_images('ffhq-cartoon-blended.pkl', [seed], None, 0.6)
    
     return img
