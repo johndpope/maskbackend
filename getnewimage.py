@@ -1,6 +1,6 @@
 import subprocess as sp
 import dnnlib
-from run_generator import generate_images
+from run_generator import generate_images,generate_average_images
 import random
 
 # def generate_images(network_pkl, seeds, npy_files, truncation_psi):
