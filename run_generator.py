@@ -21,14 +21,31 @@ import random
 import dnnlib
 import dnnlib.tflib as tflib
 from projector import Projector
+from imgcat import imgcat
 #----------------------------------------------------------------------------
-
-def generate_images(network_pkl,target_fname):
+def generate_average_images(network_pkl):
     tflib.init_tf()
     print('Loading networks from "%s"...' % network_pkl)
     _G, _D, Gs = pretrained_networks.load_networks(network_pkl)
 
     # os.makedirs(outdir, exist_ok=True)
+
+    # GENERATE AVERAGE IMAGE
+    dlatents_var = Gs.get_var('dlatent_avg')
+    dlatents = np.tile(dlatents_var, [1, Gs.components.synthesis.input_shape[1], 1])
+
+    Gs_syn_kwargs = dnnlib.EasyDict()
+    Gs_syn_kwargs.output_transform = dict(func=tflib.convert_images_to_uint8,
+                                        nchw_to_nhwc=True)
+    Gs_syn_kwargs.randomize_noise = False    
+    image = Gs.components.synthesis.run(dlatents, **Gs_syn_kwargs)[0]
+    imgcat(image)
+    return image
+
+def generate_images(network_pkl,target_fname):
+    tflib.init_tf()
+    print('Loading networks from "%s"...' % network_pkl)
+    _G, _D, Gs = pretrained_networks.load_networks(network_pkl)
 
     # # Render images for a given dlatent vector.
     if target_fname is not None:
