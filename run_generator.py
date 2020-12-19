@@ -17,13 +17,13 @@ import re
 
 import numpy as np
 import PIL.Image
-
+import random
 import dnnlib
 import dnnlib.tflib as tflib
-
+from projector import Projector
 #----------------------------------------------------------------------------
 
-def generate_images(network_pkl,dlatents_npz):
+def generate_images(network_pkl,target_fname):
     tflib.init_tf()
     print('Loading networks from "%s"...' % network_pkl)
     _G, _D, Gs = pretrained_networks.load_networks(network_pkl)
@@ -31,15 +31,28 @@ def generate_images(network_pkl,dlatents_npz):
     # os.makedirs(outdir, exist_ok=True)
 
     # # Render images for a given dlatent vector.
-    if dlatents_npz is not None:
-        print(f'Generating images from dlatents file "{dlatents_npz}"')
-        dlatents = np.load(dlatents_npz)['dlatents']
-        assert dlatents.shape[1:] == (18, 512) # [N, 18, 512]
-        imgs = Gs.components.synthesis.run(dlatents, output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True))
-        for i, img in enumerate(imgs):
-            fname = f'{outdir}/dlatent{i:02d}.png'
-            print (f'Saved {fname}')
-            return PIL.Image.fromarray(img, 'RGB')#.save(fname)
+    if target_fname is not None:
+            target_pil = PIL.Image.open(target_fname)
+            w, h = target_pil.size
+            s = min(w, h)
+            target_pil = target_pil.crop(((w - s) // 2, (h - s) // 2, (w + s) // 2, (h + s) // 2))
+            target_pil= target_pil.convert('RGB')
+            target_pil = target_pil.resize((Gs.output_shape[3], Gs.output_shape[2]), PIL.Image.ANTIALIAS)
+            target_uint8 = np.array(target_pil, dtype=np.uint8)
+            target_float = target_uint8.astype(np.float32).transpose([2, 0, 1]) * (2 / 255) - 1
+
+            proj = Projector()
+            proj.set_network(Gs)
+            proj.start([target_float])
+            proj.dlatents
+            
+            dlatents = proj.dlatents #np.load(dlatents_npz)['dlatents']
+            assert dlatents.shape[1:] == (18, 512) # [N, 18, 512]
+            imgs = Gs.components.synthesis.run(dlatents, output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=True))
+            for i, img in enumerate(imgs):
+                #fname = f'{outdir}/dlatent{i:02d}.png'
+                #print (f'Saved {fname}')
+                return PIL.Image.fromarray(img, 'RGB')#.save(fname)
 
 
     # Render images for dlatents initialized from random seeds.
@@ -57,7 +70,7 @@ def generate_images(network_pkl,dlatents_npz):
 
     # for seed_idx, seed in enumerate(seeds):
         # print('Generating image for seed %d (%d/%d) ...' % (seed, seed_idx, len(seeds)))
-    seed = 1
+    seed = np.random.randint(0, 1000)
     rnd = np.random.RandomState(seed)
     z = rnd.randn(1, *Gs.input_shape[1:]) # [minibatch, component]
     tflib.set_vars({var: rnd.randn(*var.shape.as_list()) for var in noise_vars}) # [height, width]
