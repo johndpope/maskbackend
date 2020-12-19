@@ -32,7 +32,7 @@ app = Flask(__name__)
 def serve_pil_image(pil_img):
     img_io = BytesIO()
     pil_img.save(img_io, 'JPEG', quality=90)
-    img_io.seek(0)
+    img_io.seek(0)000000000000000
     return send_file(img_io, mimetype='image/jpeg')
 
 # serve index page
@@ -47,5 +47,5 @@ def getimage():
     return serve_pil_image(data)
 
 if __name__ == '__main__':
-    subprocess.run('kill $(lsof -t -i :8000)', shell=True)
-    app.run(host='0.0.0.0', port='8010', debug=True, threaded=False)
+    # subprocess.run('kill $(lsof -t -i :8000)', shell=True)
+    app.run(host='0.0.0.0', port='8000', debug=True, threaded=False)

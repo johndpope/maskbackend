@@ -39,7 +39,7 @@ def generate_images(network_pkl,dlatents_npz):
         for i, img in enumerate(imgs):
             fname = f'{outdir}/dlatent{i:02d}.png'
             print (f'Saved {fname}')
-            return PIL.Image.fromarray(img, 'RGB')//.save(fname)
+            return PIL.Image.fromarray(img, 'RGB')#.save(fname)
 
 
     # Render images for dlatents initialized from random seeds.
@@ -57,7 +57,7 @@ def generate_images(network_pkl,dlatents_npz):
 
     # for seed_idx, seed in enumerate(seeds):
         # print('Generating image for seed %d (%d/%d) ...' % (seed, seed_idx, len(seeds)))
-    let seed = 1
+    seed = 1
     rnd = np.random.RandomState(seed)
     z = rnd.randn(1, *Gs.input_shape[1:]) # [minibatch, component]
     tflib.set_vars({var: rnd.randn(*var.shape.as_list()) for var in noise_vars}) # [height, width]
