@@ -39,8 +39,9 @@ def generate_average_images(network_pkl):
                                         nchw_to_nhwc=True)
     Gs_syn_kwargs.randomize_noise = False    
     image = Gs.components.synthesis.run(dlatents, **Gs_syn_kwargs)[0]
-    imgcat(image)
-    return image
+    img = PIL.Image.fromarray(image, 'RGB')
+    imgcat(img)
+    return img
 
 def generate_images(network_pkl,target_fname):
     tflib.init_tf()
