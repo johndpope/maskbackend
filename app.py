@@ -7,10 +7,11 @@ import dnnlib
 from PIL import Image
 import os
 import gdown
+import subprocess
 
-# get pretrained pkl from google drive server if it isn't there already
-url = "https://drive.google.com/uc?id=19wQe12syOYopUVA_eEHUdiqtdIKl4m7L"
-output = 'ffhq-cartoon-blended1.pkl'
+
+url = "https://drive.google.com/uc?id=1S1INWfG8G3sUSFqr4MKW2FLAwhu-pvF_"
+output = 'FFHQ-CartoonsAlignedHQ36v2.pkl'
 if os.path.isfile(output) is False:
     print('file not found, downloading from google drive')
     gdown.download(url, output)
@@ -30,7 +31,7 @@ app = Flask(__name__)
 # convert returned image
 def serve_pil_image(pil_img):
     img_io = BytesIO()
-    pil_img.save(img_io, 'JPEG', quality=70)
+    pil_img.save(img_io, 'JPEG', quality=90)
     img_io.seek(0)
     return send_file(img_io, mimetype='image/jpeg')
 
@@ -46,4 +47,5 @@ def getimage():
     return serve_pil_image(data)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='8000', debug=True, threaded=False)
+    subprocess.run('kill $(lsof -t -i :8000)', shell=True)
+    app.run(host='0.0.0.0', port='8010', debug=True, threaded=False)
