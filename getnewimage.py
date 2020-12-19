@@ -8,6 +8,6 @@ dnnlib.tflib.init_tf()
 
 def getnewImage():
 
-    img = generate_images('FFHQ-CartoonsAlignedHQ36v2.pkl')
+    img = generate_images('FFHQ-CartoonsAlignedHQ36v2.pkl',None)
    
     return img
