@@ -48,4 +48,4 @@ def getimage():
 
 if __name__ == '__main__':
     subprocess.run('kill $(lsof -t -i :8000)', shell=True)
-    app.run(host='0.0.0.0', port='8000', debug=True, threaded=False)
+    app.run(host='0.0.0.0', port='80', debug=True, threaded=False)
