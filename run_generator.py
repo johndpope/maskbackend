@@ -22,11 +22,48 @@ import dnnlib
 import dnnlib.tflib as tflib
 from projector import Projector
 from imgcat import imgcat
+import numpy as np
+from pathlib import Path
+from align_images import download_extract
 #----------------------------------------------------------------------------
+
+def generate_blended_image(image):
+    tflib.init_tf()
+    # download_extract()
+
+
+    # SAVE FILE TO RAW
+
+    # ALIGN IT
+
+
+    print('Loading networks from "%s"...' % image)
+    # _G, _D, Gs = pretrained_networks.load_networks(network_pkl)
+    blended_url = "AlfredENeuman24_ADA-VersatileFaces36_ADA_v2-blended-64.pkl"
+    ffhq_url = "stylegan2-ffhq-config-f.pkl"
+
+    _, _, Gs_blended = pretrained_networks.load_networks(blended_url)
+    _, _, Gs = pretrained_networks.load_networks(ffhq_url)
+
+    # latent_dir = Path("generated")
+    # latents = latent_dir.glob("*.npy")
+    # for latent_file in latents:
+    #     latent = np.load(latent_file)
+    #     latent = np.expand_dims(latent,axis=0)
+    #     synthesis_kwargs = dict(output_transform=dict(func=tflib.convert_images_to_uint8, nchw_to_nhwc=False), minibatch_size=8)
+    #     images = Gs_blended.components.synthesis.run(latent, randomize_noise=False, **synthesis_kwargs)
+    #     Image.fromarray(images.transpose((0,2,3,1))[0], 'RGB').save(latent_file.parent / (f"{latent_file.stem}-toon.jpg"))
+    # imgcat(img)
+    
+    
+    return img
+
+
 def generate_average_images(network_pkl):
     tflib.init_tf()
     print('Loading networks from "%s"...' % network_pkl)
     _G, _D, Gs = pretrained_networks.load_networks(network_pkl)
+
 
     # os.makedirs(outdir, exist_ok=True)
 
