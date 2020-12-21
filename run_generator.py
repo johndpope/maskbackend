@@ -1,5 +1,5 @@
 
-import pretrained_networks
+
 # Copyright (c) 2020, NVIDIA CORPORATION.  All rights reserved.
 #
 # NVIDIA CORPORATION and its licensors retain all intellectual property
@@ -25,6 +25,7 @@ from imgcat import imgcat
 import numpy as np
 from pathlib import Path
 from align_images import download_extract
+import pretrained_networks
 #----------------------------------------------------------------------------
 
 def generate_blended_image(image):
